@@ -1,12 +1,14 @@
-
 import copy, random, sys, time
 
-# Constantes
-ANCHO = 79   # Ancho de la cuadrícula
-ALTO = 20  # Alto de la cuadrícula
+# Ancho de la cuadrícula
+ancho = int(input('Introduce el Ancho de la cuadricula del juego: '))
+# Alto de la cuadrícula
+alto = int(input('Introduce el Alto de la cuadricula del juego: '))
 
-VIVO = 'O'  # Carácter para la celda viva
-MUERTO = ' '   # Carácter para la celda muerta
+# Carácter para la celda viva
+vivo = input('Introduce un caráter que represente la célula viva: ')
+# Carácter para la celda muerta
+muerto = input('Introduce un caráter que represente la célula muerta: ')
 
 # Las variables celulas y siguientesCelulas son diccionarios que contienen
 # el estado actual del juego y el siguiente.
@@ -14,13 +16,13 @@ MUERTO = ' '   # Carácter para la celda muerta
 siguientesCelulas = {}
 
 # Asignamos valores aleatorios a las células iniciales
-for x in range(ANCHO):
-    for y in range(ALTO):
+for x in range(ancho):
+    for y in range(alto):
         # 50% de posibilidades de estar viva o muerta
         if random.randint(0, 1) == 0:
-            siguientesCelulas[(x, y)] = VIVO
+            siguientesCelulas[(x, y)] = vivo
         else:
-            siguientesCelulas[(x, y)] = MUERTO
+            siguientesCelulas[(x, y)] = muerto
 
 while True:  # bucle principal del programa
     # Cada iteración de este bucle es una generación de la simulación del juego de la vida
@@ -29,52 +31,52 @@ while True:  # bucle principal del programa
     celulas = copy.deepcopy(siguientesCelulas)
 
     # Imprimimos las células por pantalla
-    for y in range(ALTO):
-        for x in range(ANCHO):
+    for y in range(alto):
+        for x in range(ancho):
             print(celulas[(x, y)], end='')
         print()
     print('Pulsa Ctrl-C para parar.')
 
     # Calculamos la nueva generación de células en función de los valores actuales
-    for x in range(ANCHO):
-        for y in range(ALTO):
+    for x in range(ancho):
+        for y in range(alto):
             # Obtenemos las coordenadas de las vecinas incluso si están en el límite
-            izquierda  = (x - 1) % ANCHO
-            derecha = (x + 1) % ANCHO
-            arriba = (y - 1) % ALTO
-            abajo = (y + 1) % ALTO
+            izquierda = (x - 1) % ancho
+            derecha = (x + 1) % ancho
+            arriba = (y - 1) % alto
+            abajo = (y + 1) % alto
 
             # Calculamos el número de células vecinas vivas
             numVecinasVivas = 0
-            if celulas[(izquierda, arriba)] == VIVO:
+            if celulas[(izquierda, arriba)] == vivo:
                 numVecinasVivas += 1
-            if celulas[(x, arriba)] == VIVO:
+            if celulas[(x, arriba)] == vivo:
                 numVecinasVivas += 1
-            if celulas[(derecha, arriba)] == VIVO:
+            if celulas[(derecha, arriba)] == vivo:
                 numVecinasVivas += 1
-            if celulas[(izquierda, y)] == VIVO:
+            if celulas[(izquierda, y)] == vivo:
                 numVecinasVivas += 1
-            if celulas[(derecha, y)] == VIVO:
+            if celulas[(derecha, y)] == vivo:
                 numVecinasVivas += 1
-            if celulas[(izquierda, abajo)] == VIVO:
+            if celulas[(izquierda, abajo)] == vivo:
                 numVecinasVivas += 1
-            if celulas[(x, abajo)] == VIVO:
+            if celulas[(x, abajo)] == vivo:
                 numVecinasVivas += 1
-            if celulas[(derecha, abajo)] == VIVO:
+            if celulas[(derecha, abajo)] == vivo:
                 numVecinasVivas += 1
 
             # Basamos el valor de la nueva generación en función
             # de los valores actuales
-            if celulas[(x, y)] == VIVO and (numVecinasVivas == 2
+            if celulas[(x, y)] == vivo and (numVecinasVivas == 2
                                             or numVecinasVivas == 3):
-                    # Cálulas vivas con 2 o 3 vecinas vivas permanecen vivas
-                    siguientesCelulas[(x, y)] = VIVO
-            elif celulas[(x, y)] == MUERTO and numVecinasVivas == 3:
-                # Células muertas con 3 vecinas vivas cobran vida
-                siguientesCelulas[(x, y)] = VIVO
+                # Cálulas vivas con 2 o 3 vecinas vivas permanecen vivas
+                siguientesCelulas[(x, y)] = vivo
+            elif celulas[(x, y)] == muerto and numVecinasVivas >= 2:
+                # Células muertas con 2 o más vecinas vivas cobran vida
+                siguientesCelulas[(x, y)] = vivo
             else:
                 # En cualquier otro caso continuan muertas
-                siguientesCelulas[(x, y)] = MUERTO
+                siguientesCelulas[(x, y)] = muerto
 
     try:
         time.sleep(1)  # Añadimos un segundo de pausa para evitar parpadeos
