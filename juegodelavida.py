@@ -1,14 +1,64 @@
 import copy, random, sys, time
 
-# Ancho de la cuadrícula
-ancho = int(input('Introduce el Ancho de la cuadricula del juego: '))
-# Alto de la cuadrícula
-alto = int(input('Introduce el Alto de la cuadricula del juego: '))
+ancho = 0
+alto = 0
+error = True
+error2 = True
+while True:
+    error = True
+    error2 = True
+    try:
+        # Ancho de la cuadrícula
+        ancho = int(input('Introduce el Ancho de la cuadricula del juego: '))
+    except ValueError:
+        error = False
+        print("Error: El valor debe ser un número entero.")
 
-# Carácter para la celda viva
-vivo = input('Introduce un caráter que represente la célula viva: ')
-# Carácter para la celda muerta
-muerto = input('Introduce un caráter que represente la célula muerta: ')
+    try:
+        # Alto de la cuadrícula
+        alto = int(input('Introduce el Alto de la cuadricula del juego: '))
+    except ValueError:
+        error2 = False
+        print("Error: El valor debe ser un número entero.")
+    # Si las variables no son mayores que 0 o los booleans no son correctos volverá a pedir los valores
+    if alto > 0 and ancho > 0 and error and error2:
+        break
+    else:
+        print('Vuelva a introducir los datos, los datos introducidos son incorrectos.')
+
+vivo = ''
+muerto = ''
+error = True
+error2 = True
+while True:
+    error = True
+    error2 = True
+    # Carácter para la celda viva
+    vivo = input('Introduce un caráter que represente la célula viva: ')
+    if len(vivo) != 1:
+        error = False
+        print("Error: Solo se puede añadir un carácter.")
+
+    # Carácter para la celda muerta
+    muerto = input('Introduce un caráter que represente la célula muerta: ')
+    if len(muerto) != 1:
+        error2 = False
+        print("Error: Solo se puede añadir un carácter.")
+
+    # Verificar que no ambos caracteres sean espacios
+    if vivo == ' ' and muerto == ' ':
+        print("Error: No se puede usar el espacio para ambos caracteres.")
+        error = False
+        error2 = False
+    # Verificar que no sean el mismo carácter
+    if vivo == muerto:
+        print("Error: No se puede usar el mismo carácter para vivo y muerto.")
+        error = False
+        error2 = False
+
+    # Si no hay errores, salir del bucle
+    if error and error2:
+        break
 
 # Las variables celulas y siguientesCelulas son diccionarios que contienen
 # el estado actual del juego y el siguiente.
